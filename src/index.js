@@ -1,10 +1,16 @@
-import { head } from 'lodash';
+import { head, sortBy } from 'lodash';
 import Rule, { RuleList } from './Rule';
 
 export class MediaQuery {
     constructor(name, constraints) {
         this.name = name;
         this.constraints = constraints;
+    }
+
+    toString() {
+        return this.constraints
+            ? this.constraints.join(' ')
+            : null;
     }
 }
 
@@ -25,6 +31,10 @@ export class QueryList {
 
             return query.constraints.filter(constraint => constraint === queryText).length > 0;
         });
+    }
+
+    toObject() {
+        return sortBy(this.queries, query => query.constraints !== null);
     }
 }
 
@@ -60,5 +70,26 @@ export default class StyleBridge {
         const rules = this.rules.get(selector);
 
         return head(rules.filter(rule => rule.mediaQuery.name === query));
+    }
+
+    toObject() {
+        const queries = this.queryList.toObject();
+        const result = { mediaqueries: {}, rules: {} };
+
+        queries.forEach((query) => {
+            result.mediaqueries[query.name] = query.toString();
+            result.rules[query.name] = {};
+
+            Object.entries(this.rules.cssRules).forEach((cssRule) => {
+                const [selector, rules] = cssRule;
+                const rule = head(rules.filter(r => r.mediaQuery.name === query.name));
+
+                if (rule) {
+                    result.rules[query.name][selector] = rule.toObject();
+                }
+            });
+        });
+
+        return result;
     }
 }

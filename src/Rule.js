@@ -40,7 +40,7 @@ export default class Rule {
     }
 
     extractProperties() {
-        const properties = {};
+        const properties = new Map();
         const definedStyles = Rule.getDefinedStyles(this.rule);
 
         [...definedStyles].forEach((property) => {
@@ -50,7 +50,7 @@ export default class Rule {
                 return;
             }
 
-            properties[property] = new RuleValue(value);
+            properties.set(property, new RuleValue((value)));
         });
 
         return properties;
@@ -63,6 +63,16 @@ export default class Rule {
             : null;
 
         return head(this.bridge.queryList.get(queryText));
+    }
+
+    toObject() {
+        const properties = {};
+
+        this.extractProperties().forEach((value, property) => {
+            properties[property] = value.raw;
+        });
+
+        return properties;
     }
 
     static getDefinedStyles(rule) {
