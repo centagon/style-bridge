@@ -4,10 +4,7 @@
   "description": "Javascript based CSS library",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha",
-    "watch": "mocha --watch",
-    "build": "webpack --mode development --config webpack.config.js --progress --hide-modules",
-    "build-watch": "webpack --mode development --config webpack.config.js --progress --hide-modules --watch"
+    
   },
   "keywords": [
     "css",
