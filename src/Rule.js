@@ -10,9 +10,9 @@ export class RuleValue {
 }
 
 export default class Rule {
-    constructor(rule, styletto) {
+    constructor(rule, bridge) {
         this.rule = rule;
-        this.styletto = styletto;
+        this.bridge = bridge;
         this.properties = this.extractProperties();
         this.mediaQuery = this.extractMediaQuery();
     }
@@ -62,7 +62,7 @@ export default class Rule {
             ? parentRule.conditionText
             : null;
 
-        return head(this.styletto.queryList.get(queryText));
+        return head(this.bridge.queryList.get(queryText));
     }
 
     static getDefinedStyles(rule) {

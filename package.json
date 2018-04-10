@@ -1,5 +1,5 @@
 {
-  "name": "styletto",
+  "name": "style-bridge",
   "version": "1.0.0",
   "description": "Javascript based CSS library",
   "main": "src/index.js",

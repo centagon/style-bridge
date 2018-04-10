@@ -28,7 +28,7 @@ export class QueryList {
     }
 }
 
-export default class Styletto {
+export default class StyleBridge {
     constructor(selectorText, queryList) {
         this.selectorText = selectorText;
         this.queryList = new QueryList(queryList);
