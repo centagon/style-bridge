@@ -49,7 +49,9 @@ export default class StyleBridge {
         const element = document.querySelector(this.selectorText);
         const { cssRules } = element.sheet;
 
-        return this.extractRules(cssRules);
+        this.extractRules(cssRules);
+
+        return this;
     }
 
     extractRules(rules) {
