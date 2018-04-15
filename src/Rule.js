@@ -82,7 +82,7 @@ export default class Rule {
 
 export class RuleList {
     constructor() {
-        this.cssRules = [];
+        this.cssRules = {};
     }
 
     append(selector, rule) {
