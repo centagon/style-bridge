@@ -2,20 +2,20 @@ import { head, sortBy } from 'lodash';
 import Rule, { RuleList } from './Rule';
 
 export class MediaQuery {
-    constructor(name, constraints) {
+    constructor(name, constraints = []) {
         this.name = name;
         this.constraints = constraints;
     }
 
     toString() {
-        return this.constraints
+        return this.constraints && this.constraints.length
             ? this.constraints.join(' ')
             : null;
     }
 }
 
 export class QueryList {
-    constructor(queryList) {
+    constructor(queryList = {}) {
         this.queries = Object.entries(queryList).map(entry => new MediaQuery(...entry));
     }
 
@@ -23,7 +23,16 @@ export class QueryList {
         return this.get(queryText).length > 0;
     }
 
-    get(queryText) {
+    get(queryText = null) {
+        this.queries.filter((query) => {
+            if (!query.constraints) {
+                return queryText === null;
+            }
+
+            query.constraints.filter(x => {
+                console.log(x === queryText);
+            })
+        });
         return this.queries.filter((query) => {
             if (!query.constraints) {
                 return queryText === null;
@@ -39,7 +48,7 @@ export class QueryList {
 }
 
 export default class StyleBridge {
-    constructor(selectorText, queryList) {
+    constructor(selectorText, queryList = {}) {
         this.selectorText = selectorText;
         this.queryList = new QueryList(queryList);
         this.rules = new RuleList();
