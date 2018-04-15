@@ -24,15 +24,6 @@ export class QueryList {
     }
 
     get(queryText = null) {
-        this.queries.filter((query) => {
-            if (!query.constraints) {
-                return queryText === null;
-            }
-
-            query.constraints.filter(x => {
-                console.log(x === queryText);
-            })
-        });
         return this.queries.filter((query) => {
             if (!query.constraints) {
                 return queryText === null;
