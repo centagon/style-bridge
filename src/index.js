@@ -68,10 +68,12 @@ export default class StyleBridge {
         });
     }
 
-    select(selector, query) {
+    select(selector, query = null) {
         const rules = this.rules.get(selector);
 
-        return head(rules.filter(rule => rule.mediaQuery.name === query));
+        return query === null
+            ? new RuleList(rules)
+            : head(rules.filter(rule => rule.mediaQuery.name === query));
     }
 
     toObject() {
