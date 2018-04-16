@@ -100,4 +100,8 @@ export class RuleList {
     has(selector) {
         return this.get(selector) !== undefined;
     }
+
+    removeAll(property) {
+        [...this.cssRules].forEach(r => r.remove(property));
+    }
 }
