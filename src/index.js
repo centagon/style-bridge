@@ -86,7 +86,7 @@ export default class StyleBridge {
                 const [selector, rules] = cssRule;
                 const rule = head(rules.filter(r => r.mediaQuery.name === query.name));
 
-                if (rule) {
+                if (rule && (Object.keys(rule.toObject()).length > 0)) {
                     result.rules[query.name][selector] = rule.toObject();
                 }
             });
