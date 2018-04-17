@@ -12,6 +12,12 @@ export class MediaQuery {
             ? this.constraints.join(' ')
             : null;
     }
+
+    toQueryString() {
+        const query = this.toString();
+
+        return query ? `@media ${query}` : '';
+    }
 }
 
 export class QueryList {
@@ -33,6 +39,10 @@ export class QueryList {
         });
     }
 
+    getQueryInstance(queryText) {
+        return this.queries.find(x => x.name === queryText);
+    }
+
     toObject() {
         return sortBy(this.queries, query => query.constraints !== null);
     }
@@ -46,10 +56,7 @@ export default class StyleBridge {
     }
 
     parse() {
-        const element = document.querySelector(this.selectorText);
-        const { cssRules } = element.sheet;
-
-        this.extractRules(cssRules);
+        this.extractRules(this.getSheetRules());
 
         return this;
     }
@@ -71,9 +78,28 @@ export default class StyleBridge {
     select(selector, query = null) {
         const rules = this.rules.get(selector);
 
-        return query === null
-            ? new RuleList(rules)
-            : head(rules.filter(rule => rule.mediaQuery.name === query));
+        if (query === null) {
+            return new RuleList(rules);
+        }
+
+        if (rules === undefined) {
+            return this.insert(selector, query);
+        }
+
+        return head(rules.filter(rule => rule.mediaQuery.name === query))
+            || this.insert(selector, query);
+    }
+
+    insert(selector, query) {
+        const queryString = this.queryList.getQueryInstance(query).toQueryString();
+        const ruleString = queryString
+            ? `${queryString} { ${selector} {} }`
+            : `${selector} {}`;
+
+        this.getDocumentSheet().insertRule(ruleString);
+        this.parse();
+
+        return this.select(selector, query);
     }
 
     toObject() {
@@ -95,5 +121,13 @@ export default class StyleBridge {
         });
 
         return result;
+    }
+
+    getSheetRules() {
+        return this.getDocumentSheet().cssRules;
+    }
+
+    getDocumentSheet() {
+        return document.querySelector(this.selectorText).sheet;
     }
 }
