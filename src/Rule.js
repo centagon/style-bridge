@@ -101,7 +101,7 @@ export class RuleList {
         return this.get(selector) !== undefined;
     }
 
-    removeAll(property) {
+    remove(property) {
         [...this.cssRules].forEach(r => r.remove(property));
     }
 }
