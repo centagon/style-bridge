@@ -4,7 +4,8 @@
   "description": "Javascript based CSS library",
   "main": "src/index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --require babel-core/register test/*.js"
+    "test": "./node_modules/mocha/bin/mocha --require babel-core/register test/*.js",
+    "lint": "./node_modules/.bin/eslint . ./**/*.js"
   },
   "keywords": [
     "css",
