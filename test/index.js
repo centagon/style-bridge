@@ -23,25 +23,10 @@ global.document = window.document;
 describe('MediaQuery', () => {
     describe('#constructor', () => {
         it('defines the `name` and `constraint` property.', () => {
-            const query = new MediaQuery('my-awesome-query', ['max-width', '300px']);
+            const query = new MediaQuery('my-awesome-query', 'screen and (max-width: 991px)');
 
             should(query).have.property('name');
             should(query).have.property('constraints');
-        });
-    });
-
-    describe('#toString', () => {
-        it('returns `null` when an empty or no constraint is given.', () => {
-            const query = new MediaQuery('my-awesome-query');
-
-            should(query.toString()).equal(null);
-        });
-
-        it('returns a string when a constraint is given.', () => {
-            const query = new MediaQuery('my-awesome-query', ['max-width', '300px']);
-
-            should(query.toString()).type('string');
-            should(query.toString()).equal('max-width 300px');
         });
     });
 });
@@ -78,7 +63,7 @@ describe('QueryList', () => {
     describe('#get', () => {
         it('returns the match for null queries.', () => {
             const list = new QueryList({
-                desktop: [null],
+                desktop: null,
             });
 
             should(list.get(null)).not.empty();
@@ -86,7 +71,7 @@ describe('QueryList', () => {
 
         it('returns an empty array when the given query could not be found.', () => {
             const list = new QueryList({
-                desktop: ['screen and (max-width: 500px)'],
+                desktop: 'screen and (max-width: 500px)',
             });
 
             should(list.get('another query')).be.empty();
@@ -95,7 +80,7 @@ describe('QueryList', () => {
         it('should return the matching query.', () => {
             const query = 'screen and (max-width: 500px)';
             const list = new QueryList({
-                mobile: [query],
+                mobile: query,
             });
 
             should(list.get(query)).not.empty();
@@ -105,7 +90,7 @@ describe('QueryList', () => {
     describe('#getQueryInstance', () => {
         it('should return the query instance.', () => {
             const list = new QueryList({
-                desktop: [null],
+                desktop: null,
             });
 
             should(list.getQueryInstance('desktop')).not.null();
@@ -116,8 +101,8 @@ describe('QueryList', () => {
     describe('#toObject', () => {
         it('should return an object with queries.', () => {
             const list = new QueryList({
-                mobile: ['screen and (max-width: 500px)'],
-                tablet: ['screen and (max-width: 991px)'],
+                mobile: 'screen and (max-width: 500px)',
+                tablet: 'screen and (max-width: 991px)',
                 desktop: null,
             });
 
@@ -127,8 +112,8 @@ describe('QueryList', () => {
 
         it('should sort the object with empty queries first.', () => {
             const list = new QueryList({
-                mobile: ['screen and (max-width: 500px)'],
-                tablet: ['screen and (max-width: 991px)'],
+                mobile: 'screen and (max-width: 500px)',
+                tablet: 'screen and (max-width: 991px)',
                 desktop: null,
             }).toObject();
 
@@ -173,7 +158,7 @@ describe('StyleBrige', () => {
         it('should return an instance of Rule when selecting with a selector and query.', () => {
             window.addEventListener('load', () => {
                 const bridge = new StyleBridge('#stylesheet', {
-                    desktop: [null],
+                    desktop: null,
                 }).parse();
 
                 should(bridge.select('body', 'desktop')).be.instanceof(Rule);
@@ -183,7 +168,7 @@ describe('StyleBrige', () => {
         it('should a querylist when the query is set to null.', () => {
             window.addEventListener('load', () => {
                 const bridge = new StyleBridge('#stylesheet', {
-                    desktop: [null],
+                    desktop: null,
                 }).parse();
 
                 should(bridge.select('body')).be.instanceof(RuleList);
@@ -193,7 +178,7 @@ describe('StyleBrige', () => {
         it('should insert a new rule when the selector could not be found.', () => {
             window.addEventListener('load', () => {
                 const bridge = new StyleBridge('#stylesheet', {
-                    desktop: [null],
+                    desktop: null,
                 }).parse();
 
                 should(bridge.select('#non-existing-element', 'desktop')).be.instanceof(Rule);
@@ -204,7 +189,7 @@ describe('StyleBrige', () => {
             window.addEventListener('load', () => {
                 const bridge = new StyleBridge('#stylesheet', {
                     desktop: null,
-                    tablet: ['screen and (max-width: 991px)'],
+                    tablet: 'screen and (max-width: 991px)',
                 }).parse();
 
                 should(bridge.select('#element', 'tablet')).be.instanceof(Rule);
@@ -214,7 +199,7 @@ describe('StyleBrige', () => {
         it('should return the rule.', () => {
             window.addEventListener('load', () => {
                 const bridge = new StyleBridge('#stylesheet', {
-                    desktop: [null],
+                    desktop: null,
                 }).parse();
 
                 should(bridge.select('body', 'desktop')).be.instanceof(Rule);
@@ -225,7 +210,7 @@ describe('StyleBrige', () => {
     describe('#insert', () => {
         it('should insert a new rule.', () => {
             window.addEventListener('load', () => {
-                const bridge = new StyleBridge('#stylesheet', { desktop: [null] }).parse();
+                const bridge = new StyleBridge('#stylesheet', { desktop: null }).parse();
 
                 should(bridge.rules.length).equal(0);
 
@@ -239,7 +224,7 @@ describe('StyleBrige', () => {
     describe('#toObject', () => {
         it('should convert the instance to object.', () => {
             window.addEventListener('load', () => {
-                const bridge = new StyleBridge('#stylesheet', { desktop: [null] }).parse();
+                const bridge = new StyleBridge('#stylesheet', { desktop: null }).parse();
                 bridge.insert('body', 'desktop');
 
                 should(bridge.toObject()).be.of.type('object');
@@ -252,7 +237,7 @@ describe('StyleBrige', () => {
     describe('#getSheetRules', () => {
         it('should get the sheet rules.', () => {
             window.addEventListener('load', () => {
-                const bridge = new StyleBridge('#stylesheet', { desktop: [null] });
+                const bridge = new StyleBridge('#stylesheet', { desktop: null });
                 bridge.insert('body', 'desktop');
 
                 should(bridge.getSheetRules()[0]).be.of.type('object');
@@ -263,7 +248,7 @@ describe('StyleBrige', () => {
     describe('#getDocumentSheet', () => {
         it('should get the sheet from the document.', () => {
             window.addEventListener('load', () => {
-                const bridge = new StyleBridge('#stylesheet', { desktop: [null] });
+                const bridge = new StyleBridge('#stylesheet', { desktop: null });
 
                 should(bridge.getDocumentSheet().constructor.name).equal('CSSStyleSheet');
             });

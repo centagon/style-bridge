@@ -1,4 +1,4 @@
-import { head, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import Rule, { RuleList } from './Rule';
 
 export class MediaQuery {
@@ -7,14 +7,8 @@ export class MediaQuery {
         this.constraints = constraints;
     }
 
-    toString() {
-        return this.constraints && this.constraints.length
-            ? this.constraints.join(' ')
-            : null;
-    }
-
     toQueryString() {
-        const query = this.toString();
+        const query = this.constraints;
 
         return query ? `@media ${query}` : '';
     }
@@ -30,13 +24,7 @@ export class QueryList {
     }
 
     get(queryText = null) {
-        return this.queries.filter((query) => {
-            if (!query.constraints) {
-                return queryText === null;
-            }
-
-            return query.constraints.filter(constraint => constraint === queryText).length > 0;
-        });
+        return this.queries.filter(query => query.constraints === queryText);
     }
 
     getQueryInstance(queryText) {
@@ -86,7 +74,7 @@ export default class StyleBridge {
             return this.insert(selector, query);
         }
 
-        return head(rules.filter(rule => rule.mediaQuery.name === query))
+        return rules.find(rule => rule.mediaQuery.name === query)
             || this.insert(selector, query);
     }
 
@@ -107,12 +95,12 @@ export default class StyleBridge {
         const result = { mediaqueries: {}, rules: {} };
 
         queries.forEach((query) => {
-            result.mediaqueries[query.name] = query.toString();
+            result.mediaqueries[query.name] = query.constraints;
             result.rules[query.name] = {};
 
             Object.entries(this.rules.cssRules).forEach((cssRule) => {
                 const [selector, rules] = cssRule;
-                const rule = head(rules.filter(r => r.mediaQuery.name === query.name));
+                const rule = rules.find(r => r.mediaQuery.name === query.name);
 
                 if (rule && (Object.keys(rule.toObject()).length > 0)) {
                     result.rules[query.name][selector] = rule.toObject();
