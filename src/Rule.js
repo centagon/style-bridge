@@ -81,6 +81,10 @@ export default class Rule {
 }
 
 export class RuleList {
+    get length() {
+        return Object.keys(this.cssRules).length;
+    }
+
     constructor() {
         this.cssRules = {};
     }
