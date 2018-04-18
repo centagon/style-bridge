@@ -1,5 +1,8 @@
 # style-bridge
 
+[![NPM Version](https://badge.fury.io/js/style-bridge.svg)](https://badge.fury.io/js/style-bridge)
+[![Build Status](https://travis-ci.org/centagon/style-bridge.svg?branch=master)](https://travis-ci.org/centagon/style-bridge)
+
 ```
 More to come..
 ```
@@ -19,6 +22,6 @@ promptly addressed.
 
 ## License
 
-This package is available under the [MIT license](https://github.com/centagon/unit-parse/blob/master/LICENSE.md).
+This package is available under the [MIT license](https://github.com/centagon/style-bridge/blob/master/LICENSE.md).
 
 Copyright (c) 2018 Centagon, B.V.
