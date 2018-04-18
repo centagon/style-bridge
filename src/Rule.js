@@ -59,7 +59,7 @@ export default class Rule {
     extractMediaQuery() {
         const { parentRule } = this.rule;
         const queryText = (parentRule && parentRule.constructor.name === 'CSSMediaRule')
-            ? parentRule.conditionText
+            ? parentRule.conditionText || parentRule.media[0]
             : null;
 
         return head(this.bridge.queryList.get(queryText));
