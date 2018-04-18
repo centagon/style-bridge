@@ -38,7 +38,7 @@ bridge.select('.my-element', 'desktop').set('background-color', 'red');
 bridge.select('.my-element', 'desktop').remove('background-color');
 ```
 
-### Removing all properties
+#### Removing all properties
 
 ```js
 brige.select('.my-element').remove();
