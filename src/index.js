@@ -1,5 +1,6 @@
 import { sortBy } from 'lodash';
 import Rule, { RuleList } from './Rule';
+import { QueryUtils } from './Utils';
 
 export class MediaQuery {
     constructor(name, constraints = []) {
@@ -16,7 +17,8 @@ export class MediaQuery {
 
 export class QueryList {
     constructor(queryList = {}) {
-        this.queries = Object.entries(queryList).map(entry => new MediaQuery(...entry));
+        this.queries = QueryList.sort(Object.entries(queryList)
+            .map(entry => new MediaQuery(...entry)));
     }
 
     has(queryText) {
@@ -33,6 +35,18 @@ export class QueryList {
 
     toObject() {
         return sortBy(this.queries, query => query.constraints !== null);
+    }
+
+    static sort(queries) {
+        const sortedQueries = [];
+
+        Object.entries(queries)
+            .sort((a, b) => QueryUtils.sort(a[1].constraints, b[1].constraints))
+            .forEach((query) => {
+                sortedQueries.push(query[1]);
+            });
+
+        return sortedQueries;
     }
 }
 
@@ -71,7 +85,11 @@ export default class StyleBridge {
         }
 
         if (rules === undefined) {
-            return this.insert(selector, query);
+            Object.values(this.queryList.queries).forEach((e) => {
+                this.insert(selector, e.name);
+            });
+
+            return this.select(selector, query);
         }
 
         return rules.find(rule => rule.mediaQuery.name === query)
