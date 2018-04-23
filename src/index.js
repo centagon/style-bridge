@@ -134,6 +134,10 @@ export default class StyleBridge {
     }
 
     getDocumentSheet() {
-        return document.querySelector(this.selectorText).sheet;
+        const element = typeof this.selectorText === 'object'
+            ? this.selectorText
+            : document.querySelector(this.selectorText);
+
+        return element.sheet;
     }
 }
