@@ -54,7 +54,7 @@ export default class StyleBridge {
     constructor(selectorText, queryList = {}) {
         this.selectorText = selectorText;
         this.queryList = new QueryList(queryList);
-        this.rules = new RuleList();
+        this.rules = Object.freeze(new RuleList());
     }
 
     parse() {
