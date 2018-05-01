@@ -253,5 +253,13 @@ describe('StyleBrige', () => {
                 should(bridge.getDocumentSheet().constructor.name).equal('CSSStyleSheet');
             });
         });
+
+        it('should accept a htmlelement.', () => {
+            window.addEventListener('load', () => {
+                const bridge = new StyleBridge(document.getElementById('#stylesheet'), { desktop: null });
+
+                should(bridge.getDocumentSheet().constructor.name).equal('CSSStyleSheet');
+            });
+        });
     });
 });
