@@ -32,6 +32,12 @@ export default class Rule {
         }
     }
 
+    get(property) {
+        return Rule
+            .getDefinedStyles(this.rule)
+            .getPropertyValue(StringUtils.toKebabCase(property));
+    }
+
     remove(property) {
         Rule.getDefinedStyles(this.rule)
             .removeProperty(StringUtils.toKebabCase(property));
