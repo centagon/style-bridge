@@ -33,8 +33,12 @@ export class QueryList {
         return this.queries.find(x => x.name === queryText);
     }
 
-    toObject() {
-        return sortBy(this.queries, query => query.constraints !== null);
+    toObject(reverse = true) {
+        const object = sortBy(this.queries, query => query.constraints !== null);
+
+        return reverse === true
+            ? object.reverse()
+            : object;
     }
 
     static sort(queries) {
