@@ -117,7 +117,7 @@ describe('QueryList', () => {
                 desktop: null,
             }).toObject();
 
-            should(list[0].name).equal('desktop');
+            should(list[2].name).equal('desktop');
         });
     });
 });
