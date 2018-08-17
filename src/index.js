@@ -68,17 +68,19 @@ export default class StyleBridge {
     }
 
     extractRules(rules) {
-        [...rules].forEach((rule) => {
-            const { selectorText } = rule;
+        if (rules) {
+            [...rules].forEach((rule) => {
+                const { selectorText } = rule;
 
-            if (selectorText === undefined) {
-                if (this.queryList.has(rule.conditionText)) {
-                    this.extractRules(rule.cssRules);
+                if (selectorText === undefined) {
+                    if (this.queryList.has(rule.conditionText)) {
+                        this.extractRules(rule.cssRules);
+                    }
+                } else {
+                    this.rules.append(selectorText, new Rule(rule, this));
                 }
-            } else {
-                this.rules.append(selectorText, new Rule(rule, this));
-            }
-        });
+            });
+        }
     }
 
     select(selector, query = null) {
